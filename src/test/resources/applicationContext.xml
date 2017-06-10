@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	
+	<tx:annotation-driven transaction-manager="icustomerTxManager" proxy-target-class="true" />
+	<bean id="icustomerTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="iCustomerDataSource"/>
+	</bean>
+ 
+	<context:component-scan base-package="com.want.component" />
+	<context:component-scan base-package="com.want.service" />
+	<context:component-scan base-package="com.want.batch.job" />
+	<context:component-scan base-package="com.want.utils" />
+	<context:component-scan base-package="com.want.batch.job.archive.syncbussgrade" />
+	<context:component-scan base-package="com.want.batch.job.archive.syncbussgrade.client" />
+	<context:component-scan base-package="com.want.batch.job.archive.syncbussgrade.dao" />
+	<context:component-scan base-package="com.want.batch.job.sfarpt" />
+	<context:component-scan base-package="com.want.batch.job.tch" />
+  <context:component-scan base-package="com.want.batch.job.directbatch" />
+  <context:component-scan base-package="com.want.batch.job.ghbatch" />
+  <context:component-scan base-package="com.want.batch.job.log" />
+  <context:component-scan base-package="com.want.batch.job.regularDelTchInfoJob" />
+	<task:annotation-driven/>
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath*:*.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	
+	<!--  DBCP-->
+	   <bean id="oracleDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+        <property name="maxActive" value="100" />
+     		<property name="validationQuery">
+					<value>select 1 from dual</value>
+				</property>
+
+    </bean>
+
+  <bean id="wechatJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+        <constructor-arg ref="wechatDataSource" />
+  </bean>
+  
+
+  <bean id="historyRptlogJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+        <constructor-arg ref="historyRptlogDataSource" />
+  </bean>
+
+
+	<bean id="iCustomerJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="iCustomerProdCustRelDataSource" />
+	</bean>
+	
+	<bean id="iCustomerProdCustRelJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="iCustomerProdCustRelDataSource" />
+	</bean>
+	
+	<bean id="iCustomerNWJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="iCustomerNWDataSource" />
+	</bean>
+
+	<bean id="hw09JdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="hw09DataSource" />
+	</bean>
+	
+	<bean id="historyJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="historyDataSource" />
+	</bean>
+
+	<bean id="portalJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="portalDataSource" />
+	</bean>
+	
+	<bean id="sfa2JdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="sfa2DataSource" />
+	</bean>
+	
+	<bean id="wantcompOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="wantcompDataSource" />
+	</bean>
+	<!-- batch -->
+	<bean id="batchOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="batchDataSource" />
+	</bean>
+	
+	<bean id="loggerJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="loggerDataSource" />
+	</bean>
+	<!-- 
+	<bean id="fchJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="fchDataSource" />
+	</bean> -->
+	
+	<bean id="dataMartJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="dataMartDataSource" />
+	</bean>
+	
+	<bean id="archiveJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="archiveDataSource" />
+	</bean>
+	
+	<bean id="bpmJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="bpmDataSource" />
+	</bean>
+	
+	<bean id="umpJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="umpDataSource" />
+	</bean>
+	
+	<bean id="abstractSapDataSource" class="com.want.component.sap.SapDataSource" abstract="true">
+		<property name="poolName" value="SAP_Pool" />
+		<property name="maxPoolCount" value="40" />
+		<property name="clientSystemNumber" value="00" />
+	</bean>
+	
+	<!-- wangyicheng HR -->
+	<bean id="abstractDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" abstract="true"
+		destroy-method="close">
+		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="initialPoolSize" value="0" />
+		<property name="minPoolSize" value="1" />
+		<property name="maxPoolSize" value="50" />
+		<property name="acquireIncrement" value="1" />
+		<property name="maxIdleTime" value="10" />
+		<property name="maxStatements" value="0" />
+		<property name="maxStatementsPerConnection" value="20" />
+	</bean>
+	<bean id="abstractDataSource_sqlserver1" class="org.apache.commons.dbcp.BasicDataSource" scope="singleton">
+	 	<property name="driverClassName" value="com.microsoft.jdbc.sqlserver.SQLServerDriver" /> 
+	</bean>
+	
+	<bean id="abstractDataSource_sqlserver2" class="org.apache.commons.dbcp.BasicDataSource" scope="singleton">
+	 	<property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver" />
+	</bean>
+	
+	<!-- History -->
+	<bean id="iCustomerJdbcOperations2" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="iCustomerDataSource2" />
+	</bean>
+	
+	<!-- TZ_Tody sqlserver-->
+	<bean id="tzEmpJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">	
+		<constructor-arg ref="tz_todyEmpDataSource" />
+	</bean>
+	
+	<!-- Tw_Tody sqlserver -->
+	<bean id="twEmpJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">	
+		<constructor-arg ref="tw_todyEmpDataSource" />
+	</bean>
+	 
+	<!--
+	<bean id="temporgJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">	
+		<constructor-arg ref="temporgDataSource" />
+	</bean>
+	-->
+	
+	<!--rebuild index -->
+	
+	<bean id="hewangJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">
+		<constructor-arg ref="hewangDataSource" />
+	</bean>
+	
+	<bean id="BPMUSERJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">	
+		<constructor-arg ref="BPMUSERPEDataSource" />
+	</bean>
+	
+
+	<bean id="mdmJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">	
+		<constructor-arg ref="MDMDataPESource" />
+	</bean>
+	
+	
+	<!--  34 -->
+	
+	<bean id="hw09JdbcOperations34" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">	
+		<constructor-arg ref="hw09DataSource34" />
+	</bean>
+	
+	<bean id="icustomerJdbcOperations34" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">	
+		<constructor-arg ref="icustomerDataSource34" />
+	</bean>
+	
+	
+	<bean id="smsJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">	
+		<constructor-arg ref="smsDataSource" />
+	</bean>
+	
+	<bean id="cedatadevJdbcOperations" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate">	
+		<constructor-arg ref="cedatadevDataSource" />
+	</bean>
+	
+	<bean id="portalJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        	<constructor-arg ref="portalDataSource" />
+  	</bean>	
+	
+		<!-- ================================================== -->
+	<!-- Mail Service -->
+	<!-- ================================================== -->
+	<bean id="mailService" class="com.want.component.mail.MailService">
+		<property name="mailSender" ref="mailSender" />
+		<property name="fromMailAddress">
+			<bean class="com.want.component.mail.MailAddress">
+				<constructor-arg name="address" value="${project.mail.from}"/>
+				<constructor-arg name="name" value="${project.mail.from.name}"/>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="velocityMailService" class="com.want.component.mail.VelocityMailService" parent="mailService">
+		<property name="velocityEngine" ref="mailVelocityEngine" />
+	</bean>
+
+	<!-- ======================================= -->
+	<!-- Base Mailer Setting -->
+	<!-- ======================================= -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${project.mail.host}" />
+		<property name="username" value="${project.mail.username}" />
+		<property name="password" value="${project.mail.password}" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.connectiontimeout">30000</prop>
+				<prop key="mail.smtp.timeout">30000</prop>
+				<prop key="mail.smtp.auth">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 使用  Velocity 做为邮件模板 -->
+	<bean id="mailVelocityEngine"
+		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+			<value>
+				resource.loader=class
+				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+			</value>
+		</property>
+	</bean>
+	
+	<!-- Network proxy settings
+	<bean id="proxyInetSocketAddress" class="java.net.InetSocketAddress">
+		<constructor-arg index="0" value="${network.proxy.hostname}" />
+		<constructor-arg index="1" value="${network.proxy.port}" />
+	</bean>
+	<bean class="java.net.Proxy">
+		<constructor-arg index="0" value="HTTP" />
+		<constructor-arg index="1" ref="proxyInetSocketAddress" />
+	</bean> -->
+	
+	<bean id="hrAdminDao" class="com.want.batch.job.lds.bo.HRAdminDao"/>
+
+	<bean id="hrSalesDao" class="com.want.batch.job.lds.bo.HRSalesDao"/>
+
+	<bean id="syncAdminLdapJob" class="com.want.batch.job.lds.SyncAdminLdapJob">
+	1	<property name="syncOrganization" ref="syncAdminOrganization"/>
+		<property name="syncCustomer" ref="syncCustomer"/>
+		<property name="syncApGroup" ref="syncApGroup"/>
+		<property name="syncCustomGroup" ref="syncCustomGroup"/>
+		<property name="syncHrGroup" ref="syncHrGroup"/>
+	</bean>
+
+	<bean id="syncAdminOrganization" class="com.want.batch.job.lds.SyncOrganization">
+		<property name="syncPosition" ref="syncAdminPosition"/>
+		<property name="hrDao" ref="hrAdminDao"/>
+		<property name="resources" value="ldap_admin.properties"/>
+	</bean>
+	
+	<bean id="syncAdminPosition" class="com.want.batch.job.lds.SyncPosition">
+		<property name="syncEmployee" ref="syncAdminEmployee"/>
+		<property name="hrDao" ref="hrAdminDao"/>
+		<property name="resources" value="ldap_admin.properties"/>
+	</bean>
+
+	<bean id="syncAdminEmployee" class="com.want.batch.job.lds.SyncEmployee">
+		<property name="hrDao" ref="hrAdminDao"/>
+		<property name="resources" value="ldap_admin.properties"/>
+	</bean>
+
+	<bean id="syncCustomer" class="com.want.batch.job.lds.SyncCustomer">
+		<property name="hrDao" ref="hrAdminDao"/>
+		<property name="resources" value="ldap_admin.properties"/>
+	</bean>
+
+	<bean id="syncApGroup" class="com.want.batch.job.lds.SyncApGroup">
+		<property name="hrDao" ref="hrAdminDao"/>
+		<property name="resources" value="ldap_admin.properties"/>
+	</bean>
+
+	<bean id="syncCustomGroup" class="com.want.batch.job.lds.SyncCustomGroup">
+		<property name="hrDao" ref="hrAdminDao"/>
+		<property name="resources" value="ldap_admin.properties"/>
+	</bean>
+
+	<bean id="syncHrGroup" class="com.want.batch.job.lds.SyncHrGroup">
+		<property name="hrDao" ref="hrAdminDao"/>
+		<property name="resources" value="ldap_admin.properties"/>
+	</bean>
+
+1	<bean id="syncSalesLdapJob" class="com.want.batch.job.lds.SyncSalesLdapJob">
+		<property name="syncOrganization" ref="syncSalesOrganization"/>
+		<property name="SyncPosition" ref="syncSalesPosition"></property>
+		<property name="syncEmployee" ref="syncSalesEmployee"></property>
+	</bean>
+	
+	<bean id="syncSalesOrganization" class="com.want.batch.job.lds.SyncOrganization">
+		<property name="syncPosition" ref="syncSalesPosition"/>
+		<property name="hrDao" ref="hrSalesDao"/>
+		<property name="resources" value="ldap_sales.properties"/>
+	</bean>
+	
+	<bean id="syncSalesPosition" class="com.want.batch.job.lds.SyncPosition">
+		<property name="syncEmployee" ref="syncSalesEmployee"/>
+		<property name="hrDao" ref="hrSalesDao"/>
+		<property name="resources" value="ldap_sales.properties"/>
+	</bean>
+
+	<bean id="syncSalesEmployee" class="com.want.batch.job.lds.SyncEmployee">
+		<property name="hrDao" ref="hrSalesDao"/>
+		<property name="resources" value="ldap_sales.properties"/>
+	</bean>
+
+</beans>

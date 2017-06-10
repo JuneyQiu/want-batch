@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<import resource="classpath:models.xml"/>
+ 
+	<task:scheduler id="wantScheduler" pool-size="8"/>
+
+	<!-- cron 表达式参考：http://biaoming.javaeye.com/blog/39532 -->
+	<task:scheduled-tasks scheduler="wantScheduler">
+	
+		<!-- 同步客户信息，预计调整为(7,12,17) -->
+		<task:scheduled ref="syncCustInfo" method="executeBatch" cron="0 0 4,13 * * ?" />
+	
+		<!-- 同步客户、事业部、营业所、客户组关系 -->
+		<task:scheduled ref="syncKNVV" method="executeBatch" cron="0 5 4,13 * * ?" />
+
+		<!-- 同步基础数据，预计差分后再调整 -->
+		<task:scheduled ref="dailyOrgAndAuthJobs" method="executeBatch" cron="0 0 6,13 * * ?" />
+
+		<!-- 同步基础数据，预计差分后再调整 -->
+		<task:scheduled ref="syncZRFC19" method="executeBatch" cron="0 15 6 * * ?" />
+
+		<!-- 同步HR资料 -->
+		<task:scheduled ref="syncTemporgData" method="executeBatch" cron="0 10 5 * * ?" />
+
+		<!-- 每日图片archive & 压缩每小时跑一次 -->
+		
+		<!--<task:scheduled ref="archiveTaskImagesJob" method="executeBatch" cron="0 0 0,7-23 * * ?" />-->
+		 
+
+		<!-- 同步日报，每天 00:10 -->
+		<task:scheduled ref="syncDailyReportNew" method="executeBatch" cron="0 10 0 * * ?" />
+
+		<!-- Temp : 验证稽核数据正确性，待系统稳定后可移除 -->
+		<task:scheduled ref="taskStoreListMonitor" method="executeBatch" cron="00 30 23 * * ?" />
+
+		<!-- 日志分析，暂不处理.. 
+		<task:scheduled ref="logAccessJob" method="executeBatch" cron="00 00 04 * * ?" /> -->
+
+		<!-- 每天0点同步客户业绩数据 (余威20101222) -->
+		<task:scheduled ref="syncBussGrade" method="executeBatch" cron="0 0 0 * * ?" />
+		
+		<!-- 每月1号0点转储客户库存数据 (余威20101222) -->
+		<task:scheduled ref="transmitCustStorage" method="executeBatch" cron="0 0 0 1 * ?" />
+
+		<!-- 每天凌晨1点零1分执行异常通报18异常 (陈义20101222) -->
+		<task:scheduled ref="exception18Monitor" method="executeBatch" cron="0 1 1 * * ?" />
+
+		<!-- 每天13点生成特陈实际未检核报表数据，存入sd_actual_notcheck_report 余威20101230 -->
+		<task:scheduled ref="syncSdActualUnCheckRpt" method="executeBatch" cron="0 0 13 * * ?" />
+
+		<!-- archive daily report data at 5:00 everyday -->
+		<task:scheduled ref="archiveDailyReport" method="executeBatch" cron="0 0 5 * * ?" />
+
+		<!-- 每天1点开始每4小时同步一次  物料主数据 陈义20110224 -->
+		<task:scheduled ref="syncProdInfo" method="executeBatch" cron="0 15 4,13 * * ?" />
+
+		<!-- batch monitor -->
+		<task:scheduled ref="batchMonitorJob" method="executeBatch" cron="0 10 8,13,17 * * ?" />
+
+		<!-- prod exception monitor -->
+		<task:scheduled ref="iCustomerWebExceptionMonitorJob" method="executeBatch" cron="0 0 8 ? * WED,FRI" />
+
+		<!-- rebuilding Daily Report Index -->
+		<task:scheduled ref="rebuildingDailyReportIndex" method="executeBatch" cron="0 0 8 ? * SUN" />
+		<task:scheduled ref="portalRebuildIndexesJob" method="executeBatch" cron="0 0 8 ? * SUN" />
+		<task:scheduled ref="datamartRebuildIndexesJob" method="executeBatch" cron="0 0 8 ? * SUN" />
+		<task:scheduled ref="bpmRebuildIndexesJob" method="executeBatch" cron="0 0 8 ? * SUN" />
+
+		<!-- 每天中午12点抓取异常 yuwei 2011-03-15 -->
+		<task:scheduled ref="notifyJob12" method="executeBatch" cron="0 15 12 * * ?" />
+		<!-- 每天凌晨0点抓取异常 yuwei 2011-03-15 -->
+		<task:scheduled ref="notifyJob00" method="executeBatch" cron="0 15 0 * * ?" />
+		<!-- 每天凌晨4点收集短信 yuwei 2011-03-15 -->
+		<task:scheduled ref="notifyJob04" method="executeBatch" cron="0 0 4 * * ?" />
+		
+		<!-- 从sfa转移特陈数据至icustomer  yuwei 2011-04-20  -->
+		<task:scheduled ref="sdTransmitJob" method="executeBatch" cron="0 0 3,15 * * ?" />
+		
+		<!-- 从sap同步组织结构(三级地－标准市场－营业所－分公司)  yuwei 2011-04-29  -->
+		<task:scheduled ref="syncOrg" method="executeBatch" cron="0 30 6 * * ?" />
+		
+		<!-- 从icustomer同步组织结构(三级地－标准市场)  wangyue 2011-08-25  -->
+		
+		<task:scheduled ref="syncOrg_HW" method="executeBatch" cron="0 30 7 * * ?" />
+		 
+		 
+		<!-- 稽核报表-进店品相报表定时任务 wendy/薛杰 2011-5-12 -->
+		<task:scheduled ref="auditJob" method="executeBatch" cron="0 0 6 * * ?" />
+		
+		<!-- 从SAP同步客户刷码信息数据至icustomer  00076072 2011-06-07  -->
+		<task:scheduled ref="syncCustMark" method="executeBatch" cron="0 10 0 * * ?" />
+		
+		<!-- 从SFA2同步特陈照片至icustomer 每天凌晨5点  wangyue 2013-03-26 -->
+		<task:scheduled ref="syncSFA2TchPicture" method="executeBatch" cron="0 0 5 * * ?" />
+		
+		<!-- 从SFA2同步特陈照片至icustomer 每天凌晨5点  wangyue 2013-03-26 -->
+		<task:scheduled ref="syncSFA2KaTchPicture" method="executeBatch" cron="0 0 5 * * ?" />
+		
+		<!-- 合旺同步库存 每天晚上10点  wangyue 2013-04-11 -->
+		<task:scheduled ref="updateShipmentDAO" method="executeBatch" cron="0 0 22 * * ?" />
+		
+		<!-- 促销品接口：
+				ZRFC15Job.java 一天一次，每天23点跑，第一次请跑4个月的数据
+				ZRFCPH_MAT_MULT_Job.java 一天一次，每天23点跑
+			 短信接口:    
+				SyncZMMRFC002Job.java用于同步sap  rfc接口       每天凌晨1点跑一次
+				SyncSmsTblJob.java 用于从经销商网站同步到短信发送表    每天凌晨8点跑 -->
+		<task:scheduled ref="promotionalFromSapToDBJob" method="executeBatch" cron="0 0 23 * * ?" />
+		<task:scheduled ref="promotionalPhotoJob" method="executeBatch" cron="0 0 23 * * ?" />
+		<task:scheduled ref="syncZMMRFC002Job" method="executeBatch" cron="0 0 1 * * ?" />
+		<task:scheduled ref="syncSmsTblJob" method="executeBatch" cron="0 0 8 * * ?" />
+		
+		<!-- mandy add 2013-04-26 -->
+		<!-- 更新直营特陈计划明显表中业代和主任提交时间栏位(因为这个两个栏位是新添加的) -->
+		<!-- 此排程只只需要在直营特陈新需求上版后，跑一次即可 : 秒 分 时 天 月  ? 年 -->
+		<task:scheduled ref="kaSdPlanDetailJob" method="executeBatch" cron="0 15 20 16 5 ? 2013" />
+		
+		<!-- 直营特陈实际检核报表Job.该排程每天执行，执行时一次捞取当前年月，及当前年月前一月的资料 -->
+		<!-- 每天晚24:00, 即次日凌晨00:00 运行 -->
+		<task:scheduled ref="kaActualCheckReportJob" method="executeBatch" cron="0 0 0 * * ? *" />
+		
+		<!-- 分派稽核任务 -->
+		<!-- 每周日晚24:00, 即周一凌晨00:00 运行 -->
+		<task:scheduled ref="assignedJob" method="executeBatch" cron="0 0 0 ? * MON *" />
+		
+		<!-- 每日检查并更新稽核任务相关状态 -->
+		<!-- 每天晚24:00, 即次日凌晨00:00 运行 -->
+		<task:scheduled ref="dailyCheckedTaskStatusJob" method="executeBatch" cron="0 0 0 * * ? *" />
+		
+		<!-- 2013-06-24 mirabelle add 此排程每天执行，删除8天前的指令及报表 -->
+		<task:scheduled ref="transferDirectiveJob" method="executeBatch" cron="0 0 0 * * ? " />
+		
+		<!-- 2013-06-24 mirabelle add 此排程每5分钟执行一次，监控是否有新指令产生 -->
+		<task:scheduled ref="monitorJob" method="executeBatch" cron="* 0/10 * * * ? " />
+		
+		<!-- 2013-07-04 mandy add 每天的1点触发 -->
+		<task:scheduled ref="quartzDelegator" method="executeBatch" cron="0 0 1 * * ?" />
+		
+		<!-- 2013-09-17 mandy add 主推必销品项排程 每天两点执行 -->
+		<task:scheduled ref="storeProdSeriesJob" method="executeBatch" cron="0 0 2 * * ?"/>
+		<!-- 2014-04-22 mirabelle add 稽核特陈排程 -->
+		<task:scheduled ref="ghTchJob" method="executeBatch" cron="0 0 2 * * ?"/>
+		
+		<!-- 每天13点生成特陈实际未检核报表数据，存入sd_actual_notcheck_report_bata 2014-09-22 add -->
+		<task:scheduled ref="syncSdActualUnCheckRptBata" method="executeBatch" cron="0 0 13 * * ?" />
+		
+		<!-- 2015-10-23 amy add  每天5点删除批发特陈实际信息不完整数据  -->
+		<task:scheduled ref="regularDelTchInfoJob" method="executeBatch" cron="0 0 5 * * ?" />
+		
+		
+	</task:scheduled-tasks>
+	
+	<bean id="notifyJob00" class="com.want.batch.job.archive.notify.NotifyJob">
+		<property name="commands">
+			<list>
+				<ref bean="storageNotConfirmCommand" /><!-- 2 --><!-- 客户库存未确认 -->
+				<ref bean="requireNotInputCommand" /><!-- 3 --><!-- 客户货需未录入 -->
+				<ref bean="requireNotAuditByBranchCommand" /><!-- 4 --><!-- 营业所客户货需未审核 -->
+				<ref bean="requireNotAuditByCompanyCommand" /><!-- 5 --><!-- 分公司客户货需未审核 -->
+				<!-- 促销品促销品库存未确认<ref bean="wenStorageNotConfirmedCommand" />11 -->
+				<ref bean="customerSdPlanNotSubmitCommand" /><!-- 14 --><!-- 客户未提交特陈计划 -->
+				<!--<ref bean="zhurenSdPlanNotAuditCommand" /> 15 -->
+				<ref bean="dailyRptNotInputCommand" /><!-- 31 --><!-- 业代日报未录入 -->
+				<ref bean="dailyRptNotCompletelyCommand" /><!-- 32 --><!-- 业代日报表录入不完整 -->
+				<ref bean="subrouteSalesIsZeroCommand" /><!-- 33 --><!-- 业代当日销售金额为0 -->
+				<!--<ref bean="zrSdActualNotFillCommand" /> 20 --><!-- 主任未提交特陈实际稽核信息 -->
+				<!--<ref bean="zrSdActualNotSubmitCommand" /> 19 -->
+			</list>
+		</property>
+	</bean>
+	<bean id="notifyJob12" class="com.want.batch.job.archive.notify.NotifyJob">
+		<property name="commands">
+			<list>
+				<ref bean="storageNotInputCommand" /><!-- 1 --><!-- 业代库存未录入 -->
+				<ref bean="customerStorageAmountExcCommand" /><!-- 8 --><!-- 客户库存总金额异常 -->
+				<!--促销品库存未录入<ref bean="wenStorageNotInputCommand" /> 10 -->
+				<ref bean="salesSdActualNotSubmitCommand" /><!-- 18 --><!-- 业代未提交特陈实际检核信息 -->
+			</list>
+		</property>
+	</bean>
+	<bean id="notifyJob04" class="com.want.batch.job.archive.notify.NotifyJob">
+		<property name="commands">
+			<list>
+				<ref bean="messageCommand" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="abstractRebuildIndexesJob" class="com.want.batch.job.monitor.database.RebuildIndexesJob" 
+		abstract="true" init-method="init">
+		<property name="limitTableRows" value="${rebuild.index.limit.table.rows}" />
+	</bean>
+
+	<bean id="portalRebuildIndexesJob" class="com.want.batch.job.monitor.database.RebuildIndexesJob" 
+		parent="abstractRebuildIndexesJob">
+		<property name="prodDatabaseInfos" ref="portalDatabaseInfos" />
+	</bean>
+
+	<bean id="datamartRebuildIndexesJob" class="com.want.batch.job.monitor.database.RebuildIndexesJob" 
+		parent="abstractRebuildIndexesJob">
+		<property name="prodDatabaseInfos" ref="datamartDatabaseInfos" />
+	</bean>
+
+	<bean id="bpmRebuildIndexesJob" class="com.want.batch.job.monitor.database.RebuildIndexesJob" 
+		parent="abstractRebuildIndexesJob">
+		<property name="prodDatabaseInfos" ref="bpmDatabaseInfos" />
+	</bean>
+
+</beans>

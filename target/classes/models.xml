@@ -1,0 +1,767 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	
+	<bean id="abstractDatabaseInfos" class="com.want.batch.job.monitor.database.ProdDatabaseInfos"
+		abstract="true">
+		<property name="sysSchemas" ref="sysSchemas" />
+	</bean>
+	
+	<bean id="portalDatabaseInfos" class="com.want.batch.job.monitor.database.ProdDatabaseInfos"
+		parent="abstractDatabaseInfos">
+		<property name="ip" value="10.0.0.181" />
+		<property name="instanceSid" value="portal" />
+		<property name="jdbcOperations" ref="portalJdbcOperations" />
+	</bean>
+
+	<bean id="datamartDatabaseInfos" class="com.want.batch.job.monitor.database.ProdDatabaseInfos"
+		parent="abstractDatabaseInfos">
+		<property name="ip" value="10.0.0.234" />
+		<property name="instanceSid" value="datamart" />
+		<property name="jdbcOperations" ref="dataMartJdbcOperations" />
+	</bean>
+
+	<bean id="bpmDatabaseInfos" class="com.want.batch.job.monitor.database.ProdDatabaseInfos"
+		parent="abstractDatabaseInfos">
+		<property name="ip" value="10.0.0.42" />
+		<property name="instanceSid" value="bpmflow" />
+		<property name="jdbcOperations" ref="bpmJdbcOperations" />
+	</bean>
+	
+	<util:list id="sysSchemas">
+		<value>SYS</value>
+		<value>SYSMAN</value>
+		<value>SYSTEM</value>
+		<value>TSMSYS</value>
+		<value>WMSYS</value>
+		<value>XDB</value>
+		<value>SI_INFORMTN_SCHEMA</value>
+		<value>SCOTT</value>
+		<value>MDSYS</value>
+		<value>MGMT_VIEW</value>
+		<value>ORACLE_OCM</value>
+		<value>ORDPLUGINS</value>
+		<value>ORDSYS</value>
+		<value>OUTLN</value>
+		<value>PUBLIC</value>
+		<value>MDDATA</value>
+		<value>CTXSYS</value>
+		<value>DBSNMP</value>
+		<value>DIP</value>
+		<value>DMSYS</value>
+		<value>EXFSYS</value>
+		<value>ANONYMOUS</value>
+	</util:list>
+
+	<util:list id="bpmServers">
+		<bean id="bpm187" class="com.want.data.pojo.WatchdogServer">
+			<property name="ip" value="10.0.0.187" />
+			<property name="namePorts">
+				<map>
+					<entry key="bpm187:7001" value="7110" />
+					<entry key="bpm187:7002" value="7120" />
+					<entry key="bpm187:7003" value="7130" />
+					<entry key="bpm187:7004" value="7140" />
+					<entry key="bpm187:7009" value="7150" />
+				</map>
+			</property>
+		</bean>
+	
+		<bean id="bpm188" class="com.want.data.pojo.WatchdogServer">
+			<property name="ip" value="10.0.0.188" />
+			<property name="namePorts">
+				<map>
+					<entry key="bpm188:7005" value="7110" />
+					<entry key="bpm188:7006" value="7120" />
+					<entry key="bpm188:7007" value="7130" />
+					<entry key="bpm188:7008" value="7140" />
+					<entry key="bpm188:7010" value="7150" />
+				</map>
+			</property>
+		</bean>
+	</util:list>
+
+	<util:list id="bpmServersJvm">
+		<bean id="bpmJvm187" class="com.want.data.pojo.WatchdogServer">
+			<property name="ip" value="10.0.0.187" />
+			<property name="namePorts">
+				<map>
+					<entry key="bpm187:7001(Jvm)" value="7110" />
+					<entry key="bpm187:7002(Jvm)" value="7120" />
+					<entry key="bpm187:7003(Jvm)" value="7130" />
+					<entry key="bpm187:7004(Jvm)" value="7140" />
+					<!-- 
+					<entry key="bpm187:7009(Jvm)" value="7150" /> -->
+				</map>
+			</property>
+		</bean>
+	
+		<bean id="bpmJvm188" class="com.want.data.pojo.WatchdogServer">
+			<property name="ip" value="10.0.0.188" />
+			<property name="namePorts">
+				<map>
+					<entry key="bpm188:7005(Jvm)" value="7110" />
+					<entry key="bpm188:7006(Jvm)" value="7120" />
+					<entry key="bpm188:7007(Jvm)" value="7130" />
+					<entry key="bpm188:7008(Jvm)" value="7140" />
+					<!-- 
+					<entry key="bpm188:7010(Jvm)" value="7150" /> -->
+				</map>
+			</property>
+		</bean>
+	</util:list>
+
+	<util:map id="phoneInfos">
+		<entry key="13061666870" value="陈焕" />
+		<entry key="18616250083" value="程雅婷" />
+ 		<entry key="13818521451" value="Ron" />
+    		<entry key="15202186974" value="Jimmy" />
+		<entry key="13818062760" value="David" />
+		<entry key="13681853376" value="陶杰" />
+	</util:map>
+
+	<util:map id="innerPhoneInfos">
+		<entry key="13061666870" value="陈焕" />
+		<entry key="18616250083" value="程雅婷" />
+ 		<entry key="13818521451" value="Ron" />
+ 		<entry key="13818062760" value="David" />
+		<entry key="13681853376" value="陶杰" />
+	</util:map>
+	
+	
+	<!-- wangyicheng 业务三网 -->
+	
+	<!-- 
+	<bean id="iCustomerWatchdogJobs" class="com.want.batch.job.monitor.ICustomerWatchdogJob">
+    	<property name="servers" ref="iCustomerServers" />  
+    	<property name="umpJdbcOperations" ref="umpJdbcOperations"></property>
+	</bean> -->
+
+	<bean id="iCustomerWatchdogJobs" class="com.want.batch.job.monitor.WatchdogJob">
+		<property name="systemName" value="seweb"/>
+		<property name="servers" ref="iCustomerServers" /> 
+		<property name="jdbcOperations" ref="umpJdbcOperations"/> <!-- jdbc type -->
+		
+		<property name="retryTimes" value="1"/> <!-- 重新连接的次数 -->
+		<property name="retryInterval" value="5"/> <!-- 重新连接的时间 --> 
+	</bean>
+	
+	<util:list id="iCustomerServers">
+		<bean id="iCustomer77" class="com.want.data.pojo.WatchdogServer">
+			<property name="ip" value="10.0.0.77" />
+			<property name="namePorts">
+				<map>
+					<entry key="iCustomer77:19190" value="5190" />
+					<entry key="iCustomer77:19290" value="5290" />
+				</map>
+			</property>
+		</bean>
+		
+		<bean id="iCustomer105" class="com.want.data.pojo.WatchdogServer">
+			<property name="ip" value="10.0.0.105" />
+			<property name="namePorts">
+				<map>
+					<entry key="iCustomer105:19190" value="8190" />
+					<entry key="iCustomer105:19290" value="8290" />
+					<entry key="iCustomer105:19390" value="8390" />
+					<entry key="iCustomer105:19490" value="8490" />
+				</map>
+			</property>
+		</bean>
+		
+		<bean id="iCustomer88" class="com.want.data.pojo.WatchdogServer">
+			<property name="ip" value="10.0.0.88" />
+			<property name="namePorts">
+				<map>
+					<entry key="iCustomer88:19190" value="7190" />
+					<entry key="iCustomer88:19290" value="7290" />
+					<entry key="iCustomer88:19390" value="7390" />
+					<entry key="iCustomer88:19490" value="7490" />
+				</map>
+			</property>
+		</bean>
+		
+		<bean id="iCustomer104" class="com.want.data.pojo.WatchdogServer">
+			<property name="ip" value="10.0.0.104" />
+			<property name="namePorts">
+				<map>
+					<entry key="iCustomer104:29190" value="6190" />
+					<entry key="iCustomer104:29290" value="6290" />
+					<entry key="iCustomer104:29390" value="6390" />
+					<entry key="iCustomer104:29490" value="6490" />
+				</map>
+			</property>
+		</bean>
+		
+		<bean id="iCustomer38" class="com.want.data.pojo.WatchdogServer">
+			<property name="ip" value="10.0.0.38" />
+			
+			<property name="namePorts">
+				<map>
+					<entry key="iCustomer38:39190" value="9190" />
+					<entry key="iCustomer38:39290" value="9290" />
+					<entry key="iCustomer38:39390" value="9390" />
+					<entry key="iCustomer38:39490" value="9490" />
+				</map>
+			</property>
+			</bean>
+	</util:list>
+	
+	
+	<!-- P系统 -->
+	<bean id="psysWatchdogJobs" class="com.want.batch.job.monitor.WatchdogJob">
+		<property name="systemName" value="psys"/>
+		<property name="servers" ref="psysServers" /> 
+		<property name="jdbcOperations" ref="umpJdbcOperations"/> <!-- jdbc type -->
+		
+		<property name="retryTimes" value="1"/> <!-- 重新连接的次数 -->
+		<property name="retryInterval" value="5"/> <!-- 重新连接的时间 --> 
+	</bean>
+	
+	
+	<util:list id="psysServers">
+		<bean id="psys186" class="com.want.data.pojo.WatchdogServer">
+			<property name="ip" value="10.0.0.186" />
+			<property name="namePorts">
+				<map>
+					<entry key="hewang186:HW_APP" value="7701"/>
+					<entry key="hewang186:HWPS_Report" value="7703" />
+					<entry key="hewang186:SWXX_Report" value="7713" />
+					<entry key="hewang186:HWXX_Report" value="7723" />
+					<entry key="hewang186:SQSW_Report" value="7733" />
+					<entry key="hewang186:XG_Report" value="7743" />
+					<entry key="hewang186:HW_APP2" value="7801" />
+					<entry key="hewang186:HWPS_Report2" value="7803" />
+					<entry key="hewang186:SWXX_Report2" value="7813" />
+					<entry key="hewang186:SQSW_Report2" value="7833" />
+					<entry key="hewang186:XG_Report2" value="7843" />
+					<entry key="hewang186:FixedAssetQuery" value="7217" />
+					<entry key="hewang186:MISC" value="7207" />
+					<entry key="hewang186:IPO_Server" value="80" />
+				</map>
+			</property>
+		</bean>
+	</util:list>
+	
+
+<!-- wang yi cheng →  HR数据巡检 -->
+	<bean id="hrMonitorJob" class="com.want.batch.job.monitor.HRMonitorJob">
+		<property name="mapAndSum" ref="sumMap"/>
+		<property name="mapOhter" ref="ohterMap"/>
+		<property name="sumCount" value="4"/><!-- 求和的列 -->
+		<property name="mapInsert" ref="insertMap"/>
+		<property name="hJdbc" ref="iCustomerJdbcOperations2"/> <!-- iCustomerJdbcOperations -->
+	</bean>
+	
+	<util:map id="insertMap">
+		<entry key="1.投资非本业(TZ 10.0.0.179)" value="${TZ_HR}"/>
+		<entry key="2.台湾(TW 10.225.2.22)" value="${TW_HR}"/>
+		<entry key="3.非本业(TEMPROG 10.0.0.181)" value="${TEMP_HR}"/>
+		<entry key="计算结果" value="${RESULT_HR}"/>
+		<entry key="10.0.0.181(HRORG)" value="${PRO_HR}"/>
+		<entry key="10.0.0.42(BPMFLOW:wwoauser)" value="${WWOA_HR}"/>
+		<entry key="10.0.0.181(BPMFLOW:icustomer)" value="${ICUSTOMER_HR}"/>
+		
+		</util:map>
+	
+	<util:map id="sumMap" map-class="java.util.TreeMap">
+		<entry key="1.投资非本业(TZ 10.0.0.179)" value-ref="tzlist"/>
+		<entry key="2.台湾(TW 10.225.2.22)" value-ref="twlist"/>
+		<entry key="3.非本业(TEMPROG 10.0.0.181)" value-ref="temlist"/>
+	</util:map>
+	
+	<util:map id="ohterMap" map-class="java.util.TreeMap">
+		<entry key="10.0.0.181(HRORG)" value-ref="prolist"/>
+		<entry key="10.0.0.42(BPMFLOW:wwoauser)" value-ref="wwoalist"/>
+		<entry key="10.0.0.181(BPMFLOW:icustomer)" value-ref="icustomerlist"/>
+	</util:map>
+	<util:list id="icustomerlist">
+		<bean id="icust_emp_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="ICUST_EMP"/>
+			<property name="mapData" ref="icust_emp_mapDatas"/>
+		</bean>
+		<bean id="icust_emp_position_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="ICUST_EMP_POSITION"/>
+			<property name="mapData" ref="icust_emp_position_mapDatas"/>	
+		</bean>
+		
+		<bean id="icust_emp_positiom_a_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="ICUST_EMP_POSITION_A"/>
+			<property name="mapData" ref="icust_emp_positiom_a_mapDatas"/>
+		</bean>
+		
+		<bean id="icust_position_b_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="ICUST_POSITION_B"/>
+			<property name="mapData" ref="pro_position_b_mapDatas"/>
+		</bean>
+		
+		<bean id="icust_organization_b_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="ICUST_ORGANIZATION_B"/>
+			<property name="mapData" ref="icust_organization_b_mapDatas"/>
+		</bean>	
+	
+	</util:list>
+		<util:map id="icust_emp_mapDatas">
+			<entry key="history" value-ref="icust_emp_hMap"/>
+			<entry key="tody" value-ref="icust_emp_tMap"/>
+		</util:map>
+			<util:map id="icust_emp_hMap">
+				<entry key="${icust_emp_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="icust_emp_tMap">
+				<entry key="${icust_emp_tMap}" value-ref="portalJdbcOperations"/>
+			</util:map>
+	
+		<util:map id="icust_emp_position_mapDatas">
+			<entry key="history" value-ref="icust_emp_position_hMap"/>
+			<entry key="tody" value-ref="icust_emp_position_tMap"/>
+		</util:map>
+			<util:map id="icust_emp_position_hMap">
+				<entry key="${icust_emp_position_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="icust_emp_position_tMap">
+				<entry key="${icust_emp_position_tMap}" value-ref="portalJdbcOperations"/>
+			</util:map>	
+			
+		<util:map id="icust_emp_positiom_a_mapDatas">
+			<entry key="history" value-ref="icust_emp_position_a_hMap"/>
+			<entry key="tody" value-ref="icust_emp_position_a_tMap"/>
+		</util:map>
+			<util:map id="icust_emp_position_a_hMap">
+				<entry key="${icust_emp_position_a_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="icust_emp_position_a_tMap">
+				<entry key="${icust_emp_position_a_tMap}" value-ref="portalJdbcOperations"/>
+			</util:map>
+		
+		<util:map id="pro_position_b_mapDatas">
+			<entry key="history" value-ref="icust_position_b_hMap"/>
+			<entry key="tody" value-ref="icust_position_b_tMap"/>
+		</util:map>
+			<util:map id="icust_position_b_hMap">
+				<entry key="${icust_position_b_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="icust_position_b_tMap">
+				<entry key="${icust_position_b_tMap}" value-ref="portalJdbcOperations"/>
+			</util:map>	
+		
+		<util:map id="icust_organization_b_mapDatas">
+			<entry key="history" value-ref="icust_organization_b_hMap"/>
+			<entry key="tody" value-ref="icust_organization_b_tMap"/>
+		</util:map>
+			<util:map id="icust_organization_b_hMap">
+				<entry key="${icust_organization_b_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="icust_organization_b_tMap">
+				<entry key="${icust_organization_b_tMap}" value-ref="portalJdbcOperations"/>
+			</util:map>
+
+	<util:list id="prolist">
+		<bean id="pro_emp_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="PRO_EMP"/>
+			<property name="mapData" ref="pro_emp_mapDatas"/>
+		</bean>
+		<bean id="pro_sum_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="PRO_SUM"/>
+			<property name="mapData" ref="pro_sum_mapDatas"/>
+			<property name="sqlCount" value="1"/>
+			<property name="listSql" ref="listSqls"/>
+		</bean>
+		<bean id="pro_organization_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="PRO_ORGANIZATION"/>
+			<property name="mapData" ref="pro_organization_mapDatas"/>
+		</bean>
+		<bean id="pro_position_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="PRO_POSITION"/>
+			<property name="mapData" ref="pro_position_mapDatas"/>
+		</bean>
+		<bean id="pro_sync_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="PRO_SYNC_RECORD_TBL"/>
+			<property name="mapData" ref="pro_sync_mapDatas"/>
+			<property name="selectSql" value="1"/>
+		</bean>	
+	</util:list>
+	
+	
+	<util:list id="wwoalist">
+		<bean id="wwoa_emp_hrModel" class="com.want.batch.job.monitor.HRModel">
+		<property name="tableName" value="WWOA_EMP"/>
+		<property name="mapData" ref="wwoa_emp_mapDatas"/>
+		</bean>
+		<bean id="wwoa_sum_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="WWOA_SUM"/>
+			<property name="mapData" ref="wwoa_sum_mapDatas"/>
+			<property name="sqlCount" value="2"/>
+			<property name="listSql" ref="listSqls_wwoa"/>
+			<property name="mapPar" ref="mapPars"/>
+		</bean>
+		<bean id="wwoa_organization_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="WWOA_ORGANIZATION"/>
+			<property name="mapData" ref="wwoa_organization_mapDatas"/>
+			<property name="selectSql" value="2"/>
+			<property name="mapPar" ref="mapPars_organization"/>
+		</bean>
+		<bean id="wwoa_position_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="WWOA_POSITION"/>
+			<property name="mapData" ref="wwoa_position_mapDatas"/>
+			<property name="selectSql" value="2"/>
+			<property name="mapPar" ref="mapPars_position"/>
+		</bean>
+		<bean id="wwoa_sync_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="WWOA_SYNC_RECORD_TBL"/>
+			<property name="mapData" ref="wwoa_sync_mapDatas"/>
+			<property name="selectSql" value="1"/>
+		</bean>
+	</util:list>
+	
+	<util:list id="tzlist">
+		<bean id="tz_emp_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="TZ_EMP"/>
+			<property name="mapData" ref="tz_emp_mapDatas"/>
+		</bean>	
+		<bean id="tz_emp_position_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="TZ_EMP_POSITION"/>
+			<property name="mapData" ref="tz_emp_position_mapDatas"/>
+		</bean>
+		<bean id="tz_organization_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="TZ_ORGANIZATION"/>
+			<property name="mapData" ref="tz_organization_mapDatas"/>
+		</bean>
+		<bean id="tz_position_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="TZ_POSITION"/>
+			<property name="mapData" ref="tz_position_mapDatas"/>
+		</bean>
+	</util:list>
+	
+	<util:list id="twlist">
+		<bean id="tw_emp_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="TW_EMP"/>
+			<property name="mapData" ref="tw_emp_mapDatas"/>
+		</bean>
+		<bean id="tw_emp_position_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="TW_EMP_POSITION"/>
+			<property name="mapData" ref="tw_emp_position_mapDatas"/>
+		</bean>	
+		<bean id="tw_organization_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="TW_ORGANIZATION"/>
+			<property name="mapData" ref="tw_organization_mapDatas"/>
+		</bean>
+		<bean id="tw_position_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="TW_POSITION"/>
+			<property name="mapData" ref="tw_position_mapDatas"/>
+		</bean>
+	</util:list>
+	
+	<util:list id="temlist">
+		<bean id="temp_emp_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="TEMP_EMP"/>
+			<property name="mapData" ref="temp_emp_mapDatas"/>
+		</bean>
+		<bean id="temp_emp_position_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="TEMP_EMP_POSITION"/>
+			<property name="mapData" ref="temp_emp_position_mapDatas"/>
+		</bean>
+		<bean id="temp_organization_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="TEMP_ORGANIZATION"/>
+			<property name="mapData" ref="temp_organization_mapDatas"/>
+		</bean>
+		<bean id="temp_position_hrModel" class="com.want.batch.job.monitor.HRModel">
+			<property name="tableName" value="TEMP_POSITION"/>
+			<property name="mapData" ref="temp_position_mapDatas"/>
+		</bean>
+	</util:list>
+	
+	<!-- HrModel -->
+	
+		<util:map id="tz_emp_mapDatas">
+			  <entry key="history" value-ref="tz_emp_hMap"/>
+			<entry key="tody" value-ref="tz_emp_tMap"/>
+		</util:map>
+			<util:map id="tz_emp_hMap">
+				<entry key="${tz_emp_hMap}" value-ref="iCustomerJdbcOperations2"/>  <!-- iCustomerJdbcOperations2 -->
+			</util:map>
+			<util:map id="tz_emp_tMap">
+				<entry key="${tz_emp_tMap}" value-ref="tzEmpJdbcOperations"/>
+			</util:map>	
+	
+		<util:map id="tz_emp_position_mapDatas">
+			  <entry key="history" value-ref="tz_emp_position_hMap"/>
+			<entry key="tody" value-ref="tz_emp_position_tMap"/>
+		</util:map>
+			<util:map id="tz_emp_position_hMap">
+				<entry key="${tz_emp_position_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="tz_emp_position_tMap">
+				<entry key="${tz_emp_position_tMap}" value-ref="tzEmpJdbcOperations"/>
+			</util:map>
+			
+		<util:map id="tz_organization_mapDatas">
+			  <entry key="history" value-ref="tz_organization_hMap"/>
+			<entry key="tody" value-ref="tz_organization_tMap"/>
+		</util:map>
+			<util:map id="tz_organization_hMap">
+				<entry key="${tz_organization_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="tz_organization_tMap">
+				<entry key="${tz_organization_tMap}" value-ref="tzEmpJdbcOperations"/>
+			</util:map>	
+			
+		<util:map id="tz_position_mapDatas">
+			  <entry key="history" value-ref="tz_position_hMap"/>
+			<entry key="tody" value-ref="tz_position_tMap"/>
+		</util:map>
+			<util:map id="tz_position_hMap">
+				<entry key="${tz_position_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="tz_position_tMap">
+				<entry key="${tz_position_tMap}" value-ref="tzEmpJdbcOperations"/>
+			</util:map>
+			
+		<util:map id="tw_emp_mapDatas">
+			  <entry key="history" value-ref="tw_emp_hMap"/>
+			<entry key="tody" value-ref="tw_emp_tMap"/>
+		</util:map>
+			<util:map id="tw_emp_hMap">
+				<entry key="${tw_emp_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="tw_emp_tMap">
+				<entry key="${tw_emp_tMap}" value-ref="twEmpJdbcOperations"/>
+			</util:map>
+			
+		<util:map id="tw_emp_position_mapDatas">
+			  <entry key="history" value-ref="tw_emp_position_hMap"/>
+			<entry key="tody" value-ref="tw_emp_position_tMap"/>
+		</util:map>
+			<util:map id="tw_emp_position_hMap">
+				<entry key="${tw_emp_position_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="tw_emp_position_tMap">
+				 <entry key="${tw_emp_position_tMap}" value-ref="twEmpJdbcOperations"/>				
+			</util:map>
+	
+		<util:map id="tw_organization_mapDatas">
+			  <entry key="history" value-ref="tw_organization_hMap"/>
+			<entry key="tody" value-ref="tw_organization_tMap"/>
+		</util:map>
+			<util:map id="tw_organization_hMap">
+				<entry key="${tw_organization_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="tw_organization_tMap">
+				<entry key="${tw_organization_tMap}" value-ref="twEmpJdbcOperations"/>
+			</util:map>	
+		
+		<util:map id="tw_position_mapDatas">
+			  <entry key="history" value-ref="tw_position_hMap"/>
+			<entry key="tody" value-ref="tw_position_tMap"/>
+		</util:map>
+			<util:map id="tw_position_hMap">
+				<entry key="${tw_position_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="tw_position_tMap">
+				<entry key="${tw_position_tMap}" value-ref="twEmpJdbcOperations"/>
+			</util:map>
+			
+		<util:map id="temp_emp_mapDatas">
+			  <entry key="history" value-ref="temp_emp_hMap"/>
+			 <entry key="tody" value-ref="temp_emp_tMap"/>
+		</util:map>
+			<util:map id="temp_emp_hMap">
+				<entry key="${temp_emp_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="temp_emp_tMap">
+				<entry key="${temp_emp_tMap}" value-ref="temporgJdbcOperations"/>
+			</util:map>
+
+		<util:map id="temp_emp_position_mapDatas">
+			  <entry key="history" value-ref="temp_emp_position_hMap"/>
+			<entry key="tody" value-ref="temp_emp_position_tMap"/>
+		</util:map>
+			<util:map id="temp_emp_position_hMap">
+				<entry key="${temp_emp_position_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="temp_emp_position_tMap">
+				 <entry key="${temp_emp_position_tMap}" value-ref="temporgJdbcOperations"/>				
+			</util:map>
+			
+		<util:map id="temp_organization_mapDatas">
+			  <entry key="history" value-ref="temp_organization_hMap"/>
+			<entry key="tody" value-ref="temp_organization_tMap"/>
+		</util:map>
+			<util:map id="temp_organization_hMap">
+				<entry key="${temp_organization_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="temp_organization_tMap">
+				<entry key="${temp_organization_tMap}" value-ref="temporgJdbcOperations"/>
+			</util:map>	
+			
+		<util:map id="temp_position_mapDatas">
+			  <entry key="history" value-ref="temp_position_hMap"/>
+			  <entry key="tody" value-ref="temp_position_tMap"/>
+		</util:map>
+			<util:map id="temp_position_hMap">
+				<entry key="${temp_position_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="temp_position_tMap">
+				<entry key="${temp_position_tMap}" value-ref="temporgJdbcOperations"/>
+			</util:map>
+			
+		<util:map id="pro_emp_mapDatas">
+			  <entry key="history" value-ref="pro_emp_hMap"/>
+			<entry key="tody" value-ref="pro_emp_tMap"/>
+		</util:map>
+			<util:map id="pro_emp_hMap">
+				<entry key="${pro_emp_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="pro_emp_tMap">
+				<entry key="${pro_emp_tMap}" value-ref="portalJdbcOperations"/>
+			</util:map>
+			
+		<util:list id="listSqls">
+			<value>${pro_sum_tody_list1}</value>
+			<value>${pro_sum_tody_list2}</value>
+		</util:list>	
+			<util:map id="pro_sum_mapDatas">
+				  <entry key="history" value-ref="pro_sum_hMap"/>
+				<entry key="tody" value-ref="pro_sum_tMap"/>
+			</util:map>
+				<util:map id="pro_sum_hMap">
+					<entry key="${pro_sum_hMap}" value-ref="iCustomerJdbcOperations2"/>
+				</util:map>
+				<util:map id="pro_sum_tMap">
+					<entry key="noting" value-ref="portalJdbcOperations"/>
+				</util:map>
+			
+		<util:map id="pro_organization_mapDatas">
+			  <entry key="history" value-ref="pro_organization_hMap"/>
+			<entry key="tody" value-ref="pro_organization_tMap"/>
+		</util:map>
+			<util:map id="pro_organization_hMap">
+				<entry key="${pro_organization_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="pro_organization_tMap">
+				<entry key="${pro_organization_tMap}" value-ref="portalJdbcOperations"/>
+			</util:map>	
+			
+		<util:map id="pro_position_mapDatas">
+			  <entry key="history" value-ref="pro_position_hMap"/>
+			<entry key="tody" value-ref="pro_position_tMap"/>
+		</util:map>
+			<util:map id="pro_position_hMap">
+				<entry key="${pro_position_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="pro_position_tMap">
+				<entry key="${pro_position_tMap}" value-ref="portalJdbcOperations"/>
+			</util:map>
+			
+		<util:map id="pro_sync_mapDatas">
+			  <entry key="history" value-ref="pro_sync_hMap"/>
+			<entry key="tody" value-ref="pro_sync_tMap"/>
+		</util:map>
+			<util:map id="pro_sync_hMap">
+				<entry key="${pro_sync_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="pro_sync_tMap">
+				<entry key="${pro_sync_tMap}" value-ref="portalJdbcOperations"/>
+			</util:map>
+		
+		<util:map id="wwoa_emp_mapDatas">
+			 <entry key="history" value-ref="wwoa_emp_hMap"/>
+			<entry key="tody" value-ref="wwoa_emp_tMap"/>
+		</util:map>
+			<util:map id="wwoa_emp_hMap">
+				<entry key="${wwoa_emp_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="wwoa_emp_tMap">
+				<entry key="${wwoa_emp_tMap}" value-ref="bpmJdbcOperations"/>
+			</util:map>
+			
+	<util:list id="listSqls_wwoa">
+		<value>${wwoa_sum_tody_list1}</value>
+		<value>${wwoa_sum_tody_list2}</value>
+	</util:list>
+	
+		<util:map id="mapPars">
+			<entry key="${wwoa_sum_par}" value-ref="portalJdbcOperations"/>
+			
+		</util:map>	
+			<util:map id="wwoa_sum_mapDatas">
+				  <entry key="history" value-ref="wwoa_sum_hMap"/>
+				<entry key="tody" value-ref="wwoa_sum_tMap"/>
+			</util:map>
+				<util:map id="wwoa_sum_hMap">
+					<entry key="${wwoa_sum_hMap}" value-ref="iCustomerJdbcOperations2"/>
+				</util:map>
+				<util:map id="wwoa_sum_tMap">
+					<entry key="noting" value-ref="bpmJdbcOperations"/>
+				</util:map>
+			
+		<util:map id="wwoa_organization_mapDatas">
+			  <entry key="history" value-ref="wwoa_organization_hMap"/>
+			<entry key="tody" value-ref="wwoa_organization_tMap"/>
+			
+		</util:map>
+		
+		<util:map id="mapPars_organization">
+			<entry key="${wwoa_sum_par}" value-ref="portalJdbcOperations"/>
+		</util:map>	
+				<util:map id="wwoa_organization_hMap">
+					<entry key="${wwoa_organization_hMap}" value-ref="iCustomerJdbcOperations2"/>
+				</util:map>
+				<util:map id="wwoa_organization_tMap">
+					<entry key="${wwoa_organization_tMap}" value-ref="bpmJdbcOperations"/>
+				</util:map>	
+			
+		<util:map id="wwoa_position_mapDatas">
+			  <entry key="history" value-ref="wwoa_position_hMap"/>
+			<entry key="tody" value-ref="wwoa_position_tMap"/>
+			
+		</util:map>
+	<util:map id="mapPars_position">
+		<entry key="${wwoa_sum_par}" value-ref="portalJdbcOperations"/>
+	</util:map>	
+			<util:map id="wwoa_position_hMap">
+				<entry key="${wwoa_position_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="wwoa_position_tMap">
+				<entry key="${wwoa_position_tMap}" value-ref="bpmJdbcOperations"/>
+			</util:map>
+			
+		<util:map id="wwoa_sync_mapDatas">
+			  <entry key="history" value-ref="wwoa_sync_hMap"/>
+			<entry key="tody" value-ref="wwoa_sync_tMap"/>
+		</util:map>
+			<util:map id="wwoa_sync_hMap">
+				<entry key="${wwoa_sync_hMap}" value-ref="iCustomerJdbcOperations2"/>
+			</util:map>
+			<util:map id="wwoa_sync_tMap">
+				<entry key="${wwoa_sync_tMap}" value-ref="bpmJdbcOperations"/>
+			</util:map>
+			
+			
+		<!-- rebild index -->
+		 
+		<bean id="rebuildIndexJob" class="com.want.batch.job.monitor.RebuildIndexJob">
+			<property name="mapJdbc" ref="maps"/>
+		</bean>
+		
+			<util:map id="maps">
+				<entry key="10.0.0.181_ICUSTOMER" value-ref="iCustomerJdbcOperations"/>
+				<entry key="10.0.0.181_HW09" value-ref="hw09JdbcOperations"/>
+				<entry key="10.0.0.181_PORTAL" value-ref="portalJdbcOperations"/>
+				<entry key="10.0.0.42_WWOAUSER" value-ref="bpmJdbcOperations"/>
+				<entry key="10.0.0.234_HEWANG" value-ref="hewangJdbcOperations"/>
+				<entry key="10.0.0.234_ICUSTOMER" value-ref="iCustomerJdbcOperations2"/>
+				<entry key="10.0.0.65_BPMUSER" value-ref="BPMUSERJdbcOperations"/>
+				<entry key="10.0.0.65_MDM" value-ref="mdmJdbcOperations"/>
+				<entry key="10.0.0.65_SFA2" value-ref="sfa2JdbcOperations"/>	
+		   </util:map>			
+</beans>

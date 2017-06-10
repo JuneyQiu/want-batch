@@ -1,0 +1,9 @@
+2015-11-19 14:45:03,524 [main] INFO  (AbstractApplicationContext.java:456) - Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@8814e9: startup date [Thu Nov 19 14:45:03 CST 2015]; root of context hierarchy
+2015-11-19 14:45:03,602 [main] INFO  (XmlBeanDefinitionReader.java:315) - Loading XML bean definitions from class path resource [applicationContext.xml]
+2015-11-19 14:45:10,061 [main] INFO  (XmlBeanDefinitionReader.java:315) - Loading XML bean definitions from class path resource [data-access.xml]
+2015-11-19 16:24:06,456 [main] INFO  (AbstractApplicationContext.java:456) - Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@8814e9: startup date [Thu Nov 19 16:24:06 CST 2015]; root of context hierarchy
+2015-11-19 16:24:06,518 [main] INFO  (XmlBeanDefinitionReader.java:315) - Loading XML bean definitions from class path resource [applicationContext.xml]
+2015-11-19 16:24:07,142 [main] INFO  (XmlBeanDefinitionReader.java:315) - Loading XML bean definitions from class path resource [data-access.xml]
+2015-11-19 18:17:59,872 [main] INFO  (AbstractApplicationContext.java:456) - Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@1a1c887: startup date [Thu Nov 19 18:17:59 CST 2015]; root of context hierarchy
+2015-11-19 18:17:59,950 [main] INFO  (XmlBeanDefinitionReader.java:315) - Loading XML bean definitions from class path resource [applicationContext.xml]
+2015-11-19 18:18:00,511 [main] INFO  (XmlBeanDefinitionReader.java:315) - Loading XML bean definitions from class path resource [data-access.xml]

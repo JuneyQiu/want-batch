@@ -1,0 +1,2 @@
+2015-11-22 11:48:40,872 [main] INFO  (AbstractApplicationContext.java:456) - Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@109fd93: startup date [Sun Nov 22 11:48:40 CST 2015]; root of context hierarchy
+2015-11-22 11:48:41,106 [main] INFO  (XmlBeanDefinitionReader.java:315) - Loading XML bean definitions from class path resource [applicationContext.xml]

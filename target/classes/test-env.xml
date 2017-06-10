@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+ 	<bean id="wechatDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:ORCL" />
+		<property name="username" value="wechat" />
+		<property name="password" value="wechat" />
+	</bean>
+
+	<bean id="iCustomerDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:ORCL" />
+		<property name="username" value="icustomer" />
+		<property name="password" value="icustomer" />
+	</bean>
+	
+	<bean id="icustomerDataSource34" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:ORCL" />
+		<property name="username" value="icustomer" />
+		<property name="password" value="icustomer" />
+	</bean>
+	<bean id="batchDataSource" parent="oracleDataSource">
+			
+	</bean>
+	
+	<bean id="historyRptlogDataSource" parent="oracleDataSource">
+        <property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:ORCL" />
+		<property name="username" value="rptlog" />
+		<property name="password" value="rptlog" />
+  	</bean>
+	
+	<bean id="iCustomerProdCustRelDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:ORCL" />
+		<property name="username" value="icustomer" />
+		<property name="password" value="icustomer" />
+	</bean>
+
+	<bean id="hw09DataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:ORCL" />
+		<property name="username" value="hw09" />
+		<property name="password" value="hw09" />
+	</bean>
+	
+	<bean id="hw09DataSource34" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:ORCL" />
+		<property name="username" value="hw09" />
+		<property name="password" value="hw09" />
+	</bean>
+
+	<bean id="portalDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:ORCL" />
+		<property name="username" value="portal" />
+		<property name="password" value="portal" />
+	</bean>
+
+	<bean id="historyDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:ORCL" />
+		<property name="username" value="history" />
+		<property name="password" value="history" />
+	</bean>
+	
+	<bean id="loggerDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.203:1521:TESTORCL" />
+		<property name="username" value="logger" />
+		<property name="password" value="history99" />
+	</bean>
+	
+	<bean id="dataMartDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:ORCL" />
+		<property name="username" value="rptlog" />
+		<property name="password" value="rptlog" />
+	</bean>
+	
+	<bean id="bpmDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.189:1521:bpmflow1" />
+		<property name="username" value="ww_oa3" />
+		<property name="password" value="wwoa3" />
+	</bean>
+	
+	<bean id="archiveDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.1.58:1521:HISDB" />
+		<property name="username" value="icustomer" />
+		<property name="password" value="icustomer" />
+	</bean>
+	
+	<bean id="umpDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:orcl" />
+		<property name="username" value="rpt" />
+		<property name="password" value="rpt" />
+	</bean>
+	
+	<bean id="sfa2DataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:orcl" />
+		<property name="username" value="sfa2" />
+		<property name="password" value="sfa" />
+	</bean>
+	
+	<bean id="wantcompDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:orcl" />
+		<property name="username" value="wantcomp" />
+		<property name="password" value="wantcomp" />
+	</bean>
+
+	<bean id="iCustomerNWDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:orcl" />
+		<property name="username" value="icustomernw" />
+		<property name="password" value="icustomernw" />
+	</bean>
+	
+	<!-- wangyicheng -->
+	<!-- History-->
+	<bean id="iCustomerDataSource2" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.1.58:1521:ORCL" />
+		<property name="username" value="icustomer" />
+		<property name="password" value="icustomer" />
+	</bean>
+	
+	
+	<!-- TZ Tody -->
+	<bean id="tz_todyEmpDataSource" parent="abstractDataSource_sqlserver1">
+		 <property name="url" value="jdbc:sqlserver://10.0.0.179:1433;databaseName=WHRM_TZHQ"/>
+	    <property name="username" value="tb"/>
+	    <property name="password" value="tb"/>
+	</bean>
+	
+	<!-- TW Tody -->
+	<bean id="tw_todyEmpDataSource" parent="abstractDataSource_sqlserver2">
+		 <property name="url" value="jdbc:jtds:sqlserver://10.225.2.22:1433;DatabaseName=BPM"/>
+	    <property name="username" value="sa"/>
+	    <property name="password" value="41695406"/>
+	</bean>
+	
+	<!--
+	<bean id="temporgDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:ORCL" />
+		<property name="username" value="TEMPORG" />
+		<property name="password" value="TEMPORG" />
+	</bean>
+	-->
+	
+	<!--reuild Index -->
+	<bean id="hewangDataSource" parent="oracleDataSource">
+		<!-- 暂没有测试环境database -->
+	</bean>
+
+	<bean id="BPMUSERPEDataSource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:ORCL" />
+		<property name="username" value="BPMUSER" />
+		<property name="password" value="BPMUSER" />
+	</bean>
+
+	<bean id="MDMDataPESource" parent="oracleDataSource">
+		<property name="url" value="jdbc:oracle:thin:@10.0.0.220:1521:ORCL" />
+		<property name="username" value="MDM" />
+		<property name="password" value="MDM" />
+	</bean>
+	<bean id="smsDataSource" parent="oracleDataSource">
+
+	</bean>
+	<bean id="cedatadevDataSource" parent="oracleDataSource">
+	
+	</bean>
+</beans>

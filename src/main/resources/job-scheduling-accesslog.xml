@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+	<import resource="classpath:models.xml"/>
+
+	<task:scheduler id="wantScheduler" pool-size="5"/>
+
+	<!-- cron 表达式参考：http://biaoming.javaeye.com/blog/39532 
+		凌晨1点开始，每 5  分钟执行一个~~~
+	-->
+	<task:scheduled-tasks scheduler="wantScheduler">
+		<task:scheduled ref="bpm187Prot7110ProdAccessLogToDBJob" method="execute" cron="0 5 1,2 * * ?" />
+		<task:scheduled ref="bpm187Prot7120ProdAccessLogToDBJob" method="execute" cron="0 10 1,2 * * ?" />
+		<task:scheduled ref="bpm187Prot7130ProdAccessLogToDBJob" method="execute" cron="0 15 1,2 * * ?" />
+		<task:scheduled ref="bpm187Prot7140ProdAccessLogToDBJob" method="execute" cron="0 20 1,2 * * ?" />
+		<task:scheduled ref="bpm187Prot7150ProdAccessLogToDBJob" method="execute" cron="0 45 1,2 * * ?" />
+		<task:scheduled ref="bpm188Prot7110ProdAccessLogToDBJob" method="execute" cron="0 25 1,2 * * ?" />
+		<task:scheduled ref="bpm188Prot7120ProdAccessLogToDBJob" method="execute" cron="0 30 1,2 * * ?" />
+		<task:scheduled ref="bpm188Prot7130ProdAccessLogToDBJob" method="execute" cron="0 35 1,2 * * ?" />
+		<task:scheduled ref="bpm188Prot7140ProdAccessLogToDBJob" method="execute" cron="0 40 1,2 * * ?" />
+		<task:scheduled ref="bpm188Prot7150ProdAccessLogToDBJob" method="execute" cron="0 50 1,2 * * ?" />
+	</task:scheduled-tasks>
+	
+	<bean abstract="true" id="abstractProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob">
+		<property name="downloadAccessFileRootPath" value="${download.access.log.file.root.path}" />
+	</bean>
+	<bean abstract="true" id="abstractBpmProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob"
+		parent="abstractProdAccessLogToDBJob">
+		<property name="ftp" value="true" />
+		<property name="ftpLoginUser" value="${bpm.ftp.login.user}" />
+		<property name="ftpLoginPassword" value="${bpm.ftp.login.password}" />
+		<property name="sourceAccessFileModifyDateFormatPattern" value="yyyyMMdd" />
+		<property name="accessLogFileNamePattern" value="_access_log." />
+		<property name="splitPattern" value=" " />
+		<property name="columns" value="${bpm.access.log.columns}" />
+		<property name="maxResponseTime" value="${bpm.access.log.max.response.time}" />
+		<property name="accessLogFirstIndex" value="${bpm.access.log.first.index}" />
+		<property name="accessLogContains">
+			<list>
+				<value>.action</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 187 Group -->
+	<bean abstract="true" id="abstractBpm187ProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob"
+		parent="abstractBpmProdAccessLogToDBJob">
+		<property name="serverIp" value="10.0.0.187" />
+		<property name="serverName" value="bpm187" />
+	</bean>
+	<bean id="bpm187Prot7110ProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob"
+		parent="abstractBpm187ProdAccessLogToDBJob">
+		<property name="port" value="7110" />
+		<property name="accessRootPath" value="${bpm.access.log.file.root.path}/tomcat_30_7110/logs" />
+	</bean>
+	<bean id="bpm187Prot7120ProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob"
+		parent="abstractBpm187ProdAccessLogToDBJob">
+		<property name="port" value="7120" />
+		<property name="accessRootPath" value="${bpm.access.log.file.root.path}/tomcat_30_7120/logs" />
+	</bean>
+	<bean id="bpm187Prot7130ProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob"
+		parent="abstractBpm187ProdAccessLogToDBJob">
+		<property name="port" value="7130" />
+		<property name="accessRootPath" value="${bpm.access.log.file.root.path}/tomcat_30_7130/logs" />
+	</bean>
+	<bean id="bpm187Prot7140ProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob"
+		parent="abstractBpm187ProdAccessLogToDBJob">
+		<property name="port" value="7140" />
+		<property name="accessRootPath" value="${bpm.access.log.file.root.path}/tomcat_30_7140/logs" />
+	</bean>
+	<bean id="bpm187Prot7150ProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob"
+		parent="abstractBpm187ProdAccessLogToDBJob">
+		<property name="port" value="7150" />
+		<property name="accessRootPath" value="${bpm.access.log.file.root.path}/tomcat_30_7150/logs" />
+	</bean>
+	<!-- 188 Group -->
+	<bean abstract="true" id="abstractBpm188ProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob"
+		parent="abstractBpmProdAccessLogToDBJob">
+		<property name="serverIp" value="10.0.0.188" />
+		<property name="serverName" value="bpm188" />
+	</bean>
+	<bean id="bpm188Prot7110ProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob"
+		parent="abstractBpm188ProdAccessLogToDBJob">
+		<property name="port" value="7110" />
+		<property name="accessRootPath" value="${bpm.access.log.file.root.path}/tomcat_30_7110/logs" />
+	</bean>
+	<bean id="bpm188Prot7120ProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob"
+		parent="abstractBpm188ProdAccessLogToDBJob">
+		<property name="port" value="7120" />
+		<property name="accessRootPath" value="${bpm.access.log.file.root.path}/tomcat_30_7120/logs" />
+	</bean>
+	<bean id="bpm188Prot7130ProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob"
+		parent="abstractBpm188ProdAccessLogToDBJob">
+		<property name="port" value="7130" />
+		<property name="accessRootPath" value="${bpm.access.log.file.root.path}/tomcat_30_7130/logs" />
+	</bean>
+	<bean id="bpm188Prot7140ProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob"
+		parent="abstractBpm188ProdAccessLogToDBJob">
+		<property name="port" value="7140" />
+		<property name="accessRootPath" value="${bpm.access.log.file.root.path}/tomcat_30_7140/logs" />
+	</bean>
+	<bean id="bpm188Prot7150ProdAccessLogToDBJob" class="com.want.batch.job.monitor.ProdAccessLogToDBJob"
+		parent="abstractBpm188ProdAccessLogToDBJob">
+		<property name="port" value="7150" />
+		<property name="accessRootPath" value="${bpm.access.log.file.root.path}/tomcat_30_7150/logs" />
+	</bean>
+
+</beans>

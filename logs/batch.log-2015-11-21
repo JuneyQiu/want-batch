@@ -1,0 +1,11 @@
+2015-11-21 11:38:30,709 [main] INFO  (ExecuteJob.java:32) - 最大内存 = 259522560
+2015-11-21 11:38:30,709 [main] INFO  (ExecuteJob.java:33) - 已分配内存 = 16252928
+2015-11-21 11:38:30,709 [main] INFO  (ExecuteJob.java:34) - 已分配内存中的剩余空间 = 15355568
+2015-11-21 11:38:30,709 [main] INFO  (ExecuteJob.java:35) - 最大可用内存 = 258625200
+2015-11-21 11:38:30,709 [main] INFO  (ExecuteJob.java:44) - loading context: 
+2015-11-21 11:38:30,709 [main] INFO  (ExecuteJob.java:46) - 	classpath:applicationContext.xml
+2015-11-21 11:38:30,709 [main] INFO  (ExecuteJob.java:46) - 	classpath:data-access.xml
+2015-11-21 11:38:30,709 [main] INFO  (ExecuteJob.java:46) - 	classpath:sap-access.xml
+2015-11-21 11:38:30,719 [main] INFO  (ExecuteJob.java:46) - 	classpath:job-scheduling.xml
+2015-11-21 11:38:30,890 [main] INFO  (AbstractApplicationContext.java:456) - Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@1592174: startup date [Sat Nov 21 11:38:30 CST 2015]; root of context hierarchy
+2015-11-21 11:38:30,980 [main] INFO  (XmlBeanDefinitionReader.java:315) - Loading XML bean definitions from class path resource [applicationContext.xml]
